@@ -9,7 +9,6 @@ function showFortune(evt) {
     $.get("/fortune", (results) => {
         $("#fortune-text").html(results);
     });
-
 }
 
 $('#get-fortune-button').on('click', showFortune);
@@ -24,9 +23,7 @@ function showWeather(evt) {
     let formData = {"zipcode": $("#zipcode-field").val()};
 
     $.get(url, formData, (results) => {
-
         $("#weather-info").html(results.forecast);
-
     });
 }
 
@@ -43,13 +40,18 @@ function orderMelons(evt) {
 
     const formInputs = {
         'qty': $("#qty-field").val(),
-        'melon': $("#melon-type-field").val(),
+        'melon_type': $("#melon-type-field").val(),
     };
 
     $.post("/order-melons.json", formInputs, (results) => {
 
-        $("#order-status").html(results.msg, results.code);
-
+        if (results.code === "ERROR") {
+            $("#order-status").addClass("order-error");
+        } else {
+            $("#order-status").removeClass("order-error");        
+        };
+        
+        $("#order-status").html(results.msg);
     });
 }
 
